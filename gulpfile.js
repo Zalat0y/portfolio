@@ -53,7 +53,7 @@ gulp.task('clean:build', function() {
 
 gulp.task('less', function() {
 
-	return gulp.src('src/less/main.less')
+	return gulp.src('src/less/*.less')
 		// следит за ошибками
 		.pipe(plumber({
 			errorHandler: notify.onError( function(err){
@@ -76,7 +76,7 @@ gulp.task('less', function() {
 		.pipe(browserSync.stream())
 		// сжимаем и переименовываем файл сss
 		.pipe(minify())
-		.pipe(rename('main.min.css'))
+		.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest('src/css'));
 
 });
@@ -117,9 +117,9 @@ gulp.task('less', function() {
 
 gulp.task('compressjs', function (cb) {
   pump([
-        gulp.src('src/js/*.js'),
+        gulp.src('src/js/main.js'),
         uglify(),
-        rename('main.min.js'),
+        rename({ suffix: '.min' }),
         gulp.dest('src/js')
     ],
     cb
@@ -138,8 +138,8 @@ gulp.task('compressjs', function (cb) {
 gulp.task('copy', function() {
     return gulp.src([
     		'src/img/**',
-    		'src/css/**',
-    		'src/js/**',
+    		'src/css/main.min.css',
+    		'src/js/main.min.js',
     		'src/**.html'
     	], {
     		base:'src'
